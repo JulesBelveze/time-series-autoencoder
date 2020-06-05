@@ -71,10 +71,11 @@ class TimeSeriesDataset(object):
         :return: DataLoaders associated to training and testing data
         '''
         X_train, X_test, y_train, y_test = self.preprocess_data()
+        nb_features = X_train.shape[1]
 
         train_dataset = self.frame_series(X_train, y_train)
         test_dataset = self.frame_series(X_test, y_test)
 
         train_iter = DataLoader(train_dataset, batch_size=batch_size, shuffle=False, drop_last=True)
         test_iter = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, drop_last=True)
-        return train_iter, test_iter
+        return train_iter, test_iter, nb_features
