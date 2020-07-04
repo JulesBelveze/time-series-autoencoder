@@ -3,6 +3,7 @@
 This repository contains an autoencoder for multivariate time series forecasting.
 It features two attention mechanisms described in *[A Dual-Stage Attention-Based Recurrent Neural Network for Time Series Prediction](https://arxiv.org/abs/1704.02971)* and was inspired by [Seanny123's repository](https://github.com/Seanny123/da-rnn).
 
+![Autoencoder architecture](autoenc_architecture.png)
 ## Download and dependencies
 To clone the repository please run:
 ```
