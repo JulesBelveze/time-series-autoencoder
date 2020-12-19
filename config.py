@@ -3,11 +3,24 @@ import torch
 
 class Config(dict):
     def __init__(self, **kwargs):
+        """
+        Initialize an instance of this class.
+
+        Args:
+
+        """
         super().__init__(**kwargs)
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     def set(self, key, value):
+        """
+        Sets the value to the value.
+
+        Args:
+            key: (str):
+            value:
+        """
         self[key] = value
         setattr(self, key, value)
 

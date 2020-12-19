@@ -7,7 +7,16 @@ from torch.nn import functional as tf
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def init_hidden(x, hidden_size: int, num_dir: int = 1, xavier: bool = True):
+def init_hidden(x: torch.Tensor, hidden_size: int, num_dir: int = 1, xavier: bool = True):
+    """
+    Initialize hidden.
+
+    Args:
+        x: (torch.Tensor): input tensor
+        hidden_size: (int):
+        num_dir: (int): number of directions in LSTM
+        xavier: (bool): wether or not use xavier initialization
+    """
     if xavier:
         return nn.init.xavier_normal_(torch.zeros(num_dir, x.size(0), hidden_size)).to(device)
     return Variable(torch.zeros(num_dir, x.size(0), hidden_size)).to(device)
@@ -19,13 +28,26 @@ def init_hidden(x, hidden_size: int, num_dir: int = 1, xavier: bool = True):
 
 class Encoder(nn.Module):
     def __init__(self, config, input_size: int):
+        """
+        Initialize the model.
+
+        Args:
+            config:
+            input_size: (int): size of the input
+        """
         super(Encoder, self).__init__()
         self.input_size = input_size
         self.hidden_size = config['hidden_size_encoder']
         self.seq_len = config['seq_len']
         self.lstm = nn.LSTM(input_size=input_size, hidden_size=config['hidden_size_encoder'])
 
-    def forward(self, input_data):
+    def forward(self, input_data: torch.Tensor):
+        """
+        Run forward computation.
+
+        Args:
+            input_data: (torch.Tensor): tensor of input daa
+        """
         h_t, c_t = (init_hidden(input_data, self.hidden_size),
                     init_hidden(input_data, self.hidden_size))
         input_encoded = Variable(torch.zeros(input_data.size(0), self.seq_len, self.hidden_size))
@@ -38,6 +60,13 @@ class Encoder(nn.Module):
 
 class AttnEncoder(nn.Module):
     def __init__(self, config, input_size: int):
+        """
+        Initialize the network.
+
+        Args:
+            config:
+            input_size: (int): size of the input
+        """
         super(AttnEncoder, self).__init__()
         self.input_size = input_size
         self.hidden_size = config['hidden_size_encoder']
@@ -54,14 +83,28 @@ class AttnEncoder(nn.Module):
         )
         self.softmax = nn.Softmax(dim=1)
 
-    def _get_noise(self, input_data, sigma=0.01, p=0.1):
+    def _get_noise(self, input_data: torch.Tensor, sigma=0.01, p=0.1):
+        """
+        Get noise.
+
+        Args:
+            input_data: (torch.Tensor): tensor of input data
+            sigma: (float): variance of the generated noise
+            p: (float): probability to add noise
+        """
         normal = sigma * torch.randn(input_data.shape)
         mask = np.random.uniform(size=(input_data.shape))
         mask = (mask < p).astype(int)
         noise = normal * torch.tensor(mask)
         return noise
 
-    def forward(self, input_data):
+    def forward(self, input_data: torch.Tensor):
+        """
+        Forward computation.
+
+        Args:
+            input_data: (torch.Tensor): tensor of input data
+        """
         h_t, c_t = (init_hidden(input_data, self.hidden_size, num_dir=self.directions),
                     init_hidden(input_data, self.hidden_size, num_dir=self.directions))
 
@@ -96,13 +139,26 @@ class AttnEncoder(nn.Module):
 
 class Decoder(nn.Module):
     def __init__(self, config):
+        """
+        Initialize the network.
+
+        Args:
+            config:
+        """
         super(Decoder, self).__init__()
         self.seq_len = config['seq_len']
         self.hidden_size = config['hidden_size_decoder']
         self.lstm = nn.LSTM(1, config['hidden_size_decoder'], bidirectional=False)
         self.fc = nn.Linear(config['hidden_size_decoder'], config['output_size'])
 
-    def forward(self, _, y_hist):
+    def forward(self, _, y_hist: torch.Tensor):
+        """
+        Forward pass
+
+        Args:
+            _:
+            y_hist: (torch.Tensor): shifted target
+        """
         h_t, c_t = (init_hidden(y_hist, self.hidden_size),
                     init_hidden(y_hist, self.hidden_size))
 
@@ -114,6 +170,12 @@ class Decoder(nn.Module):
 
 class AttnDecoder(nn.Module):
     def __init__(self, config):
+        """
+        Initialize the network.
+
+        Args:
+            config:
+        """
         super(AttnDecoder, self).__init__()
         self.seq_len = config['seq_len']
         self.encoder_hidden_size = config['hidden_size_encoder']
@@ -130,7 +192,14 @@ class AttnDecoder(nn.Module):
         self.fc_out = nn.Linear(self.decoder_hidden_size + self.encoder_hidden_size, self.out_feats)
         self.fc.weight.data.normal_()
 
-    def forward(self, input_encoded, y_history):
+    def forward(self, input_encoded: torch.Tensor, y_history: torch.Tensor):
+        """
+        Perform forward computation.
+
+        Args:
+            input_encoded: (torch.Tensor): tensor of encoded input
+            y_history: (torch.Tensor): shifted target
+        """
         h_t, c_t = (
             init_hidden(input_encoded, self.decoder_hidden_size), init_hidden(input_encoded, self.decoder_hidden_size))
         context = Variable(torch.zeros(input_encoded.size(0), self.encoder_hidden_size))
@@ -159,12 +228,27 @@ class AttnDecoder(nn.Module):
 
 class AutoEncForecast(nn.Module):
     def __init__(self, config, input_size):
+        """
+        Initialize the network.
+
+        Args:
+            config:
+            input_size: (int): size of the input
+        """
         super(AutoEncForecast, self).__init__()
         self.encoder = AttnEncoder(config, input_size).to(device) if config['input_att'] else \
             Encoder(config, input_size).to(device)
         self.decoder = AttnDecoder(config).to(device) if config['temporal_att'] else Decoder(config).to(device)
 
-    def forward(self, encoder_input, y_hist, return_attention: bool = True):
+    def forward(self, encoder_input: torch.Tensor, y_hist: torch.Tensor, return_attention: bool = True):
+        """
+        Forward computation. encoder_input_inputs.
+
+        Args:
+            encoder_input: (torch.Tensor): tensor of input data
+            y_hist: (torch.Tensor): shifted target
+            return_attention: (bool): whether or not to return the attention
+        """
         attentions, encoder_output = self.encoder(encoder_input)
         outputs = self.decoder(encoder_output, y_hist)
 

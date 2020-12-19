@@ -1,12 +1,22 @@
 import os
-import torch
-import numpy as np
-import torch.nn.functional as F
+
 import matplotlib.pyplot as plt
+import numpy as np
+import torch
+import torch.nn.functional as F
 from tqdm import tqdm
 
 
 def evaluate(test_iter, criterion, model, config):
+    """
+    Evaluate the model on the given test set.
+
+    Args:
+        test_iter: (DataLoader): test dataset iterator
+        criterion: loss function
+        model: model to use
+        config: config
+    """
     predictions, targets, attentions = [], [], []
     eval_loss = 0.0
 
@@ -51,6 +61,14 @@ def evaluate(test_iter, criterion, model, config):
 
 
 def get_eval_report(eval_loss: float, predictions: torch.Tensor, targets: torch.Tensor):
+    """
+    Evaluates the accuracy.
+
+    Args:
+        eval_loss: (float): loss vlue
+        predictions: (torch.Tensor): tensor of predictions
+        targets: (torch.Tensor): tensor of targets
+    """
     residuals = np.mean(predictions.numpy() - targets.numpy())
     MSE = F.mse_loss(targets, predictions).item()
     return {"MSE": MSE, "residuals": residuals, "loss": eval_loss}
