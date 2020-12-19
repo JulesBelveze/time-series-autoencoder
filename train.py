@@ -1,12 +1,25 @@
-import torch
 import os
-from tqdm import tqdm
 from json import dump
+
+import torch
 from tensorboardX import SummaryWriter
+from tqdm import tqdm
+
 from eval import evaluate
 
 
 def train(train_iter, test_iter, model, criterion, optimizer, config):
+    """
+    Training function.
+
+    Args:
+        train_iter: (DataLoader): train data iterator
+        test_iter: (DataLoader): test data iterator
+        model: model
+        criterion: loss to use
+        optimizer: optimizer to use
+        config:
+    """
     tb_writer_train = SummaryWriter(logdir=config['output_dir'], filename_suffix='train')
     tb_writer_test = SummaryWriter(logdir=config['output_dir'], filename_suffix='test')
 

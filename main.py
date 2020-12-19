@@ -11,6 +11,11 @@ from eval import evaluate
 
 
 def parse_args():
+    """
+    Parse command line arguments.
+
+    Args:
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch-size", default=config["batch_size"], type=int, help="batch size")
     parser.add_argument("--output-size", default=config["output_size"], type=int,
@@ -59,6 +64,11 @@ def load_checkpoint(checkpoint_path, model, optimizer, device):
 
 
 def run(args):
+    """
+    Run the model.
+
+    Args:
+    """
     config.update(args)
     df = pd.read_csv(config["data_path"])
 
