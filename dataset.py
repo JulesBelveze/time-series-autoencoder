@@ -49,7 +49,7 @@ class TimeSeriesDataset(object):
         :return: TensorDataset
         '''
         nb_obs, nb_features = X.shape
-        features, target = [], []
+        features, target, y_hist = [], [], []
 
         for i in range(1, nb_obs - self.seq_length - self.prediction_window):
             features.append(torch.FloatTensor(X[i:i + self.seq_length, :]).unsqueeze(0))
@@ -60,8 +60,11 @@ class TimeSeriesDataset(object):
             for i in range(1, nb_obs - self.seq_length - self.prediction_window):
                 target.append(
                     torch.tensor(y[i + self.seq_length:i + self.seq_length + self.prediction_window]))
-            target_var = torch.cat(target)
-            return TensorDataset(features_var, target_var)
+                # lagged output used for prediction
+                y_hist.append(
+                    torch.tensor(y[i + self.seq_length - 1:i + self.seq_length + self.prediction_window - 1]))
+            target_var, y_hist_var = torch.cat(target), torch.cat(y_hist)
+            return TensorDataset(features_var, y_hist_var, target_var)
         return TensorDataset(features_var)
 
     def get_loaders(self, batch_size: int):
