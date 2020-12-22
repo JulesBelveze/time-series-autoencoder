@@ -27,7 +27,9 @@ def train(train_iter, test_iter, model, criterion, optimizer, config):
         os.makedirs(config["output_dir"])
 
     with open(os.path.join(config['output_dir'], "config.json"), 'w+') as f:
-        dump(config, f)
+        # removing non serializable types
+        c = {key: value for key, value in config.items() if key not in ["device"]}
+        dump(c, f)
 
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=config['lrs_step_size'], gamma=0.5)
 

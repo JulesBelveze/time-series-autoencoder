@@ -70,7 +70,8 @@ def run(args):
     Args:
     """
     config.update(args)
-    df = pd.read_csv(config["data_path"])
+    index_col_name = config["index_col"] if "index_col" in config.keys() else None
+    df = pd.read_csv(config["data_path"], index_col=index_col_name)
 
     if not os.path.exists(config["output_dir"]):
         os.makedirs(config["output_dir"])

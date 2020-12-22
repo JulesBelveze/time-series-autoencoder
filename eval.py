@@ -24,7 +24,7 @@ def evaluate(test_iter, criterion, model, config):
     for i, batch in tqdm(enumerate(test_iter), total=len(test_iter), desc="Evaluating"):
         with torch.no_grad():
             feature, y_hist, target = batch
-            output, att = model(feature.to(config["device"]), y_hist.to(config["device"]))
+            output, att = model(feature.to(config["device"]), y_hist.to(config["device"]), return_attention=True)
 
             loss = criterion(output.to(config["device"]), target.to(config["device"])).item()
             if config['reg1']:
