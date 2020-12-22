@@ -72,6 +72,7 @@ class AttnEncoder(nn.Module):
         self.hidden_size = config['hidden_size_encoder']
         self.seq_len = config['seq_len']
         self.add_noise = config['denoising']
+        self.directions = config['directions']
         self.lstm = nn.LSTM(
             input_size=self.input_size,
             hidden_size=self.hidden_size,
@@ -217,7 +218,7 @@ class AttnDecoder(nn.Module):
 
             context = torch.bmm(x.unsqueeze(1), input_encoded.to(device))[:, 0, :]  # (batch_size, encoder_hidden_size)
 
-            y_tilde = self.fc(torch.cat((context.to(device), y_history[:, t].unsqueeze(1).to(device)),
+            y_tilde = self.fc(torch.cat((context.to(device), y_history[:, t].to(device)),
                                         dim=1))  # (batch_size, out_size)
 
             self.lstm.flatten_parameters()
@@ -240,7 +241,7 @@ class AutoEncForecast(nn.Module):
             Encoder(config, input_size).to(device)
         self.decoder = AttnDecoder(config).to(device) if config['temporal_att'] else Decoder(config).to(device)
 
-    def forward(self, encoder_input: torch.Tensor, y_hist: torch.Tensor, return_attention: bool = True):
+    def forward(self, encoder_input: torch.Tensor, y_hist: torch.Tensor, return_attention: bool = False):
         """
         Forward computation. encoder_input_inputs.
 
@@ -250,7 +251,7 @@ class AutoEncForecast(nn.Module):
             return_attention: (bool): whether or not to return the attention
         """
         attentions, encoder_output = self.encoder(encoder_input)
-        outputs = self.decoder(encoder_output, y_hist)
+        outputs = self.decoder(encoder_output, y_hist.float())
 
         if return_attention:
             return outputs, attentions

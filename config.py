@@ -28,13 +28,14 @@ class Config(dict):
 config = Config(
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
 
-    categorical_cols=[],  # name of columns containing categorical variables
-    label_col=[],  # name of target column
+    categorical_cols=["Time"],  # name of columns containing categorical variables
+    label_col=["T"],  # name of target column
+    index_col="Date",
 
     output_size=1,  # for forecasting
 
     num_epochs=100,
-    batch_size=32,
+    batch_size=16,
     lr=1e-5,
     reg1=True,
     reg2=False,
@@ -47,6 +48,7 @@ config = Config(
     input_att=True,
     temporal_att=True,
     denoising=False,
+    directions=1,
 
     max_grad_norm=0.1,
     gradient_accumulation_steps=1,
