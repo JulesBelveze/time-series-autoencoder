@@ -5,7 +5,7 @@ import torch
 from tensorboardX import SummaryWriter
 from tqdm import tqdm
 
-from eval import evaluate
+from .eval import evaluate
 
 
 def train(train_iter, test_iter, model, criterion, optimizer, config):
