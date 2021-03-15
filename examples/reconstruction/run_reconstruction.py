@@ -8,6 +8,11 @@ from .config_reconstruction import config
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def parse_args():
+    """
+    Parse command line arguments.
+
+    Args:
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch-size", default=config["batch_size"], type=int, help="batch size")
     parser.add_argument("--output-size", default=config["output_size"], type=int,
