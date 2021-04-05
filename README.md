@@ -76,5 +76,9 @@ Optional arguments:
   * denoising autoencoder
   * sparse autoencoder
   
+  ## Examples
+  You can find under the `examples` scripts to train the model in both cases:
+  * reconstruction: the dataset can be found [here](https://gist.github.com/JulesBelveze/99ecdbea62f81ce647b131e7badbb24a)
+  * forecasting: the dataset can be found [here](https://gist.github.com/JulesBelveze/e9997b9b0b68101029b461baf698bd72)
   
   
