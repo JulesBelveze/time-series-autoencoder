@@ -88,6 +88,9 @@ class TimeSeriesDataset(object):
         return train_iter, test_iter, nb_features
 
     def invert_scale(self, predictions):
+        """
+        Inverts the scale of the predictions
+        """
         if isinstance(predictions, torch.Tensor):
             predictions = predictions.numpy()
         unscaled = self.y_scaler.inverse_transform(predictions)
