@@ -8,7 +8,7 @@ from tqdm import tqdm
 from .eval import evaluate
 
 
-def train(train_iter, test_iter, model, criterion, optimizer, config):
+def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
     """
     Training function.
 
@@ -65,7 +65,7 @@ def train(train_iter, test_iter, model, criterion, optimizer, config):
 
                 if global_step % config['logging_steps'] == 0:
                     if config['eval_during_training']:
-                        results = evaluate(test_iter, criterion, model, config)
+                        results = evaluate(test_iter, criterion, model, config, ts)
                         for key, val in results.items():
                             tb_writer_test.add_scalar("eval_{}".format(key), val, global_step)
 

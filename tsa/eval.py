@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 
-def evaluate(test_iter, criterion, model, config):
+def evaluate(test_iter, criterion, model, config, ts):
     """
     Evaluate the model on the given test set.
 
@@ -39,18 +39,21 @@ def evaluate(test_iter, criterion, model, config):
             targets.append(target.squeeze(1).cpu())
             attentions.append(att.cpu())
 
+    predictions, targets = torch.cat(predictions), torch.cat(targets)
 
     if config['do_eval']:
+        preds, targets = ts.invert_scale(predictions), ts.invert_scale(targets)
+
         plt.figure()
-        plt.plot(torch.cat(predictions), linewidth=.3)
-        plt.plot(torch.cat(targets), linewidth=.3)
+        plt.plot(preds, linewidth=.3)
+        plt.plot(targets, linewidth=.3)
         plt.savefig("{}/preds.png".format(config["output_dir"]))
 
-        torch.save(torch.cat(targets), os.path.join(config['output_dir'], "targets.pt"))
-        torch.save(torch.cat(predictions), os.path.join(config['output_dir'], "predictions.pt"))
-        torch.save(torch.cat(attentions), os.path.join(config['output_dir'], "attentions.pt"))
+        torch.save(targets, os.path.join(config['output_dir'], "targets.pt"))
+        torch.save(predictions, os.path.join(config['output_dir'], "predictions.pt"))
+        torch.save(attentions, os.path.join(config['output_dir'], "attentions.pt"))
 
-    results = get_eval_report(eval_loss / len(test_iter), torch.cat(predictions), torch.cat(targets))
+    results = get_eval_report(eval_loss / len(test_iter), predictions, targets)
     file_eval = os.path.join(config['output_dir'], "eval_results.txt")
     with open(file_eval, "w") as f:
         f.write("********* EVAL REPORT ********\n")

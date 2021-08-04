@@ -3,11 +3,11 @@ import torch
 import argparse
 import pandas as pd
 import torch.nn as nn
-from config import config
-from dataset import TimeSeriesDataset
-from model import AutoEncForecast
-from train import train
-from eval import evaluate
+from .config import config
+from .dataset import TimeSeriesDataset
+from .model import AutoEncForecast
+from .train import train
+from .eval import evaluate
 
 
 def parse_args():
@@ -40,11 +40,11 @@ def parse_args():
                         help="activate/deactivate L2 regularization")
     parser.add_argument("--denoising", default=config["denoising"], type=lambda x: (str(x).lower() == "true"),
                         help="whether or not to use a denoising autoencoder")
-    parser.add_argument("--do-train", default=False, type=lambda x: (str(x).lower() == "true"),
+    parser.add_argument("--do-train", default=True, type=lambda x: (str(x).lower() == "true"),
                         help="whether or not to train the model")
-    parser.add_argument("--do-eval", default=False, type=lambda x: (str(x).lower() == "true"),
+    parser.add_argument("--do-eval", default=True, type=lambda x: (str(x).lower() == "true"),
                         help="whether or not evaluating the mode")
-    parser.add_argument("--data-path", default="data.csv", help="path to data file")
+    parser.add_argument("--data-path", default='nflx.csv', help="path to data file")
     parser.add_argument("--output-dir", default=config["output_dir"], help="name of folder to output files")
     parser.add_argument("--ckpt", default=None, help="checkpoint path for evaluation")
     return parser.parse_args()
@@ -91,9 +91,9 @@ def run(args):
 
     if config["do_eval"] and config["ckpt"]:
         model, _, loss, epoch = load_checkpoint(config["ckpt"], model, optimizer, config["device"])
-        evaluate(test_iter, loss, model, config)
+        evaluate(test_iter, loss, model, config, ts)
     elif config["do_train"]:
-        train(train_iter, test_iter, model, criterion, optimizer, config)
+        train(train_iter, test_iter, model, criterion, optimizer, config, ts)
 
 
 if __name__ == "__main__":
