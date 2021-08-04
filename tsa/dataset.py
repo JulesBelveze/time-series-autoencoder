@@ -90,10 +90,6 @@ class TimeSeriesDataset(object):
     def invert_scale(self, predictions):
         """
         Inverts the scale of the predictions
-
-        Args:
-            self: write your description
-            predictions: write your description
         """
         if isinstance(predictions, torch.Tensor):
             predictions = predictions.numpy()
