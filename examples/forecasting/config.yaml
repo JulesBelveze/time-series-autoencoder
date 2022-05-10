@@ -1,0 +1,34 @@
+data:
+  categorical_cols: [ ]
+  label_col: ["AH"]
+  index_col: "Date_Time"
+  prediction_window: 1
+  seq_len: 3
+
+training:
+  num_epochs: 100
+  batch_size: 16
+  lr: 1e-5
+  reg1: True
+  reg2: False
+  reg_factor1: 1e-4
+  reg_factor2: 1e-4
+  hidden_size_encoder: 64
+  hidden_size_decoder: 64
+  output_size: 1
+  input_att: True
+  temporal_att: True
+  denoising: False
+  directions: 1
+  max_grad_norm: 0.1
+  gradient_accumulation_steps: 1
+  lrs_step_size: 5000
+
+general:
+  do_eval: True
+  do_train: True
+  logging_steps: 100
+
+  output_dir: "output"
+  save_steps: 5000
+  eval_during_training: True
