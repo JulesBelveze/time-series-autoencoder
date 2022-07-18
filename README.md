@@ -17,7 +17,9 @@ git clone https://github.com/JulesBelveze/time-series-autoencoder.git
 
 To install all the required dependencies please run:
 ```
-pip install -r requirements.txt
+python3 -m venv .venv/tsa
+source .venv/tsa/bin/active
+poetry install
 ```
 
 ## Usage
