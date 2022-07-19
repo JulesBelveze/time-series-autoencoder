@@ -75,5 +75,5 @@ def get_eval_report(eval_loss: float, predictions: torch.Tensor, targets: torch.
         targets: (torch.Tensor): tensor of targets
     """
     residuals = np.mean(predictions.numpy() - targets.numpy())
-    MSE = F.mse_loss(targets, predictions).item()
+    MSE = F.mse_loss(targets.squeeze(), predictions.squeeze()).item()
     return {"MSE": MSE, "residuals": residuals, "loss": eval_loss}

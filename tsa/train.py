@@ -1,5 +1,4 @@
 import os
-from json import dump
 
 import torch
 from tensorboardX import SummaryWriter
@@ -7,7 +6,7 @@ from tqdm import tqdm
 
 from .eval import evaluate
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
@@ -22,8 +21,8 @@ def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
         optimizer: optimizer to use
         config:
     """
-    tb_writer_train = SummaryWriter(logdir=config.general.output_dir, filename_suffix='train')
-    tb_writer_test = SummaryWriter(logdir=config.general.output_dir, filename_suffix='test')
+    tb_writer_train = SummaryWriter(logdir=config.general.output_dir, filename_suffix="train")
+    tb_writer_test = SummaryWriter(logdir=config.general.output_dir, filename_suffix="test")
 
     if not os.path.exists(config.general.output_dir):
         os.makedirs(config.general.output_dir)
@@ -32,7 +31,7 @@ def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
 
     global_step, logging_loss = 0, 0.0
     train_loss = 0.0
-    for epoch in tqdm(range(config.training.num_epochs), unit='epoch'):
+    for epoch in tqdm(range(config.training.num_epochs), unit="epoch"):
         for i, batch in tqdm(enumerate(train_iter), total=len(train_iter), unit="batch"):
             model.train()
             optimizer.zero_grad()
@@ -42,10 +41,10 @@ def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
             loss = criterion(output.to(device), target.to(device))
 
             if config.training.reg1:
-                params = torch.cat([p.view(-1) for name, p in model.named_parameters() if 'bias' not in name])
+                params = torch.cat([p.view(-1) for name, p in model.named_parameters() if "bias" not in name])
                 loss += config.training.reg_factor1 * torch.norm(params, 1)
             if config.training.reg2:
-                params = torch.cat([p.view(-1) for name, p in model.named_parameters() if 'bias' not in name])
+                params = torch.cat([p.view(-1) for name, p in model.named_parameters() if "bias" not in name])
                 loss += config.training.reg_factor2 * torch.norm(params, 2)
 
             if config.training.gradient_accumulation_steps > 1:
@@ -68,14 +67,14 @@ def train(train_iter, test_iter, model, criterion, optimizer, config, ts):
 
                     tb_writer_train.add_scalar("train_loss", (train_loss - logging_loss) / config.general.logging_steps,
                                                global_step)
-                    tb_writer_train.add_scalar("lr", scheduler.get_lr()[0], global_step)
+                    tb_writer_train.add_scalar("lr", scheduler.get_last_lr()[0], global_step)
                     logging_loss = train_loss
 
             if global_step % config.general.save_steps == 0:
                 torch.save({
-                    'epoch': epoch + 1,
-                    'encoder_state_dict': model.encoder.state_dict(),
-                    'decoder_state_dict': model.decoder.state_dict(),
-                    'optimizer_state_dict': optimizer.state_dict(),
-                    'loss': criterion
-                }, '{}/checkpoint-{}.ckpt'.format(config.general.output_dir, global_step))
+                    "epoch": epoch + 1,
+                    "encoder_state_dict": model.encoder.state_dict(),
+                    "decoder_state_dict": model.decoder.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "loss": criterion
+                }, "{}/checkpoint-{}.ckpt".format(config.general.output_dir, global_step))
