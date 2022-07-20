@@ -11,6 +11,12 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 @hydra.main(config_path="./", config_name="config")
 def run(cfg):
+    """
+    Run the MSE model.
+
+    Args:
+        cfg: write your description
+    """
     ts = instantiate(cfg.data)
     train_iter, test_iter, nb_features = ts.get_loaders()
 
