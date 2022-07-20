@@ -1,0 +1,41 @@
+data:
+  _target_: tsa.dataset.TimeSeriesDataset
+  batch_size: 16
+  categorical_cols: [ ]
+  index_col: "Date_Time"
+  target_col: [ "AH" ]
+  data_path: "../data/AirQualityUCI.csv"
+  prediction_window: 1
+  seq_length: 3
+  task:
+    _target_: tsa.dataset.Tasks
+    value: prediction
+
+training:
+  batch_size: ${data.batch_size}
+  denoising: False
+  directions: 1
+  gradient_accumulation_steps: 1
+  hidden_size_encoder: 64
+  hidden_size_decoder: 64
+  input_att: True
+  lr: 1e-5
+  lrs_step_size: 5000
+  max_grad_norm: 0.1
+  num_epochs: 100
+  output_size: 1
+  reg1: True
+  reg2: False
+  reg_factor1: 1e-4
+  reg_factor2: 1e-4
+  seq_len: ${data.seq_length}
+  temporal_att: True
+
+general:
+  do_eval: True
+  do_train: True
+  logging_steps: 100
+
+  output_dir: "output"
+  save_steps: 5000
+  eval_during_training: True

@@ -6,16 +6,22 @@
 </p>
 
 This repository contains an autoencoder for multivariate time series forecasting.
-It features two attention mechanisms described in *[A Dual-Stage Attention-Based Recurrent Neural Network for Time Series Prediction](https://arxiv.org/abs/1704.02971)* and was inspired by [Seanny123's repository](https://github.com/Seanny123/da-rnn).
+It features two attention mechanisms described
+in *[A Dual-Stage Attention-Based Recurrent Neural Network for Time Series Prediction](https://arxiv.org/abs/1704.02971)*
+and was inspired by [Seanny123's repository](https://github.com/Seanny123/da-rnn).
 
 ![Autoencoder architecture](autoenc_architecture.png)
+
 ## Download and dependencies
+
 To clone the repository please run:
+
 ```
 git clone https://github.com/JulesBelveze/time-series-autoencoder.git
 ```
 
 To install all the required dependencies please run:
+
 ```
 python3 -m venv .venv/tsa
 source .venv/tsa/bin/active
@@ -23,18 +29,17 @@ poetry install
 ```
 
 ## Usage
+
+The project uses [Hydra](https://hydra.cc/docs/intro/) as a configuration parser. You can simply change the parameters
+directly within your `.yaml` file or you can override/set parameter using flags (for a complete guide please refer to
+the docs).
+
 ```
-python main.py [-h] [--batch-size BATCH_SIZE] [--output-size OUTPUT_SIZE]
-               [--label-col LABEL_COL] [--input-att INPUT_ATT]
-               [--temporal-att TEMPORAL_ATT] [--seq-len SEQ_LEN]
-               [--hidden-size-encoder HIDDEN_SIZE_ENCODER]
-               [--hidden-size-decoder HIDDEN_SIZE_DECODER]
-               [--reg-factor1 REG_FACTOR1] [--reg-factor2 REG_FACTOR2]
-               [--reg1 REG1] [--reg2 REG2] [--denoising DENOISING]
-               [--do-train DO_TRAIN] [--do-eval DO_EVAL]
-               [--data-path DATA_PATH] [--output-dir OUTPUT_DIR] [--ckpt CKPT]
+python3 main.py -cn=[PATH_TO_FOLDER_CONFIG] -cp=[CONFIG_NAME]
 ```
+
 Optional arguments:
+
 ```  
   -h, --help            show this help message and exit
   --batch-size BATCH_SIZE
@@ -71,16 +76,19 @@ Optional arguments:
                         name of folder to output files
   --ckpt CKPT           checkpoint path for evaluation 
   ```
-  
-  ## Features
-  * handles multivariate time series 
-  * attention mechanisms
-  * denoising autoencoder
-  * sparse autoencoder
-  
-  ## Examples
-  You can find under the `examples` scripts to train the model in both cases:
-  * reconstruction: the dataset can be found [here](https://gist.github.com/JulesBelveze/99ecdbea62f81ce647b131e7badbb24a)
-  * forecasting: the dataset can be found [here](https://gist.github.com/JulesBelveze/e9997b9b0b68101029b461baf698bd72)
+
+## Features
+
+* handles multivariate time series
+* attention mechanisms
+* denoising autoencoder
+* sparse autoencoder
+
+## Examples
+
+You can find under the `examples` scripts to train the model in both cases:
+
+* reconstruction: the dataset can be found [here](https://gist.github.com/JulesBelveze/99ecdbea62f81ce647b131e7badbb24a)
+* forecasting: the dataset can be found [here](https://gist.github.com/JulesBelveze/e9997b9b0b68101029b461baf698bd72)
   
   

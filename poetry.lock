@@ -1,4 +1,12 @@
 [[package]]
+name = "antlr4-python3-runtime"
+version = "4.9.3"
+description = "ANTLR 4.9.3 runtime for Python 3.7"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "colorama"
 version = "0.4.5"
 description = "Cross-platform colored terminal text."
@@ -35,6 +43,19 @@ type1 = ["xattr"]
 ufo = ["fs (>=2.2.0,<3)"]
 unicode = ["unicodedata2 (>=14.0.0)"]
 woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
+
+[[package]]
+name = "hydra-core"
+version = "1.2.0"
+description = "A framework for elegantly configuring complex applications"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+antlr4-python3-runtime = ">=4.9.0,<4.10.0"
+omegaconf = ">=2.2,<3.0"
+packaging = "*"
 
 [[package]]
 name = "joblib"
@@ -78,6 +99,18 @@ description = "NumPy is the fundamental package for array computing with Python.
 category = "main"
 optional = false
 python-versions = ">=3.8"
+
+[[package]]
+name = "omegaconf"
+version = "2.2.2"
+description = "A flexible configuration library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+antlr4-python3-runtime = ">=4.9.0,<4.10.0"
+PyYAML = ">=5.1.0"
 
 [[package]]
 name = "packaging"
@@ -155,6 +188,14 @@ description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "pyyaml"
+version = "6.0"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
 
 [[package]]
 name = "scikit-learn"
@@ -290,16 +331,19 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "bb288676f1cd8f85ccd1f7fd15bfbc023b3e6619e6a18cfc50f7675f435760af"
+content-hash = "7a76cd70835fc2a736c3b36f8a1f0b6a1eecdd1578f116220a642ceea4fafb43"
 
 [metadata.files]
+antlr4-python3-runtime = []
 colorama = []
 cycler = []
 fonttools = []
+hydra-core = []
 joblib = []
 kiwisolver = []
 matplotlib = []
 numpy = []
+omegaconf = []
 packaging = []
 pandas = []
 pillow = []
@@ -307,6 +351,7 @@ protobuf = []
 pyparsing = []
 python-dateutil = []
 pytz = []
+pyyaml = []
 scikit-learn = []
 scipy = []
 setuptools-scm = []

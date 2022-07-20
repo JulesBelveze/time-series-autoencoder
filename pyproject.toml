@@ -12,6 +12,7 @@ sklearn = "^0.0"
 matplotlib = "^3.3.4"
 tensorboardX = "^2.1"
 tqdm = "^4.59.0"
+hydra-core = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 
