@@ -24,7 +24,7 @@ To install all the required dependencies please run:
 
 ```
 python3 -m venv .venv/tsa
-source .venv/tsa/bin/active
+source .venv/tsa/bin/activate
 poetry install
 ```
 
