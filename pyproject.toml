@@ -7,7 +7,7 @@ authors = ["JulesBelveze <jules.belveze@hotmail.fr>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 pandas = "1.1.5"
-torch = "^1.11.0"
+torch = ">=1.11,<3.0"
 sklearn = "^0.0"
 matplotlib = "^3.3.4"
 tensorboardX = "^2.1"
