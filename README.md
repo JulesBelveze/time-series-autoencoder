@@ -42,7 +42,7 @@ uv pip sync pyproject.toml
 </details>
 
 <details>
-<summary>Install directly from `requirements.txt`</summary>
+<summary>Install directly from requirements.txt</summary>
 
 ```shell
 pip install -r requirements.txt
