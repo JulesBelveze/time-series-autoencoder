@@ -84,7 +84,8 @@ class AttnEncoder(nn.Module):
         )
         self.softmax = nn.Softmax(dim=1)
 
-    def _get_noise(self, input_data: torch.Tensor, sigma=0.01, p=0.1):
+    @staticmethod
+    def _get_noise(input_data: torch.Tensor, sigma=0.01, p=0.1):
         """
         Get noise.
 
@@ -248,7 +249,7 @@ class AutoEncForecast(nn.Module):
         Args:
             encoder_input: (torch.Tensor): tensor of input data
             y_hist: (torch.Tensor): shifted target
-            return_attention: (bool): whether or not to return the attention
+            return_attention: (bool): whether to return the attention
         """
         attentions, encoder_output = self.encoder(encoder_input)
         outputs = self.decoder(encoder_output, y_hist.float())
