@@ -50,6 +50,7 @@ def evaluate(test_iter, criterion, model, config, ts):
         plt.plot(preds, linewidth=.3)
         plt.plot(targets, linewidth=.3)
         plt.savefig("{}/preds.png".format(config.general.output_dir))
+        plt.close()
 
         torch.save(targets, os.path.join(config.general.output_dir, "targets.pt"))
         torch.save(predictions, os.path.join(config.general.output_dir, "predictions.pt"))
