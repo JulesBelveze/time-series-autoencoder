@@ -5,14 +5,14 @@ description = ""
 authors = ["JulesBelveze <jules.belveze@hotmail.fr>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-pandas = "1.1.5"
-torch = "^1.11.0"
-sklearn = "^0.0"
+python = "^3.10"
+torch = "^2.2.0"
 matplotlib = "^3.3.4"
 tensorboardX = "^2.1"
 tqdm = "^4.59.0"
 hydra-core = "^1.2.0"
+scikit-learn = "^1.5.2"
+pandas = "^2.2.3"
 
 [tool.poetry.dev-dependencies]
 
