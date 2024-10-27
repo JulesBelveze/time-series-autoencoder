@@ -22,7 +22,7 @@ git clone https://github.com/JulesBelveze/time-series-autoencoder.git
 
 <details>
 
-<summary>Use [uv](https://docs.astral.sh/uv/)</summary>
+<summary>Use uv</summary>
 
 Then install `uv` 
 ```shell
