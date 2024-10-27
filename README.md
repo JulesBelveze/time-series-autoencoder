@@ -20,13 +20,35 @@ To clone the repository please run:
 git clone https://github.com/JulesBelveze/time-series-autoencoder.git
 ```
 
-To install all the required dependencies please run:
+<details>
 
+<summary>Use [uv](https://docs.astral.sh/uv/)</summary>
+
+Then install `uv` 
+```shell
+# install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh  # linux/mac
+# or
+brew install uv  # mac with homebrew
 ```
-python3 -m venv .venv/tsa
-source .venv/tsa/bin/activate
-poetry install
+
+# setup environment and install dependencies
+```bash
+cd time-series-autoencoder
+uv venv
+uv pip sync pyproject.toml
 ```
+
+</details>
+
+<details>
+<summary>Install directly from `requirements.txt`</summary>
+
+```shell
+pip install -r requirements.txt
+```
+
+</details>
 
 ## Usage
 
